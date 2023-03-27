@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,4 +51,11 @@ public class Manager
         ProgressDict[key] = val;
     }
 
+    /* Displaying Text */
+
+    public void DisplayMessage(GameProgress key, float duration)
+    {
+        CameraFollow _camera = Camera.main.GetComponent<CameraFollow>();
+        _camera.DisplayMessage(key, duration);  
+    }
 }

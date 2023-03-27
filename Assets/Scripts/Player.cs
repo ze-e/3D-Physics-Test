@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.Acceleration); 
         }
 
-        if (transform.position.y < DeathCoord && Manager.GetInstance().GetProgressByKey(GameProgress.GameOver) == false) StartCoroutine(RestartGame());
+        if (transform.position.y < DeathCoord && Manager.GetInstance().GetProgressByKey(GameProgress.GameOver) == false) StartCoroutine(Death());
 
     }
 
@@ -90,11 +90,12 @@ public class Player : MonoBehaviour
 
 
     /* death */
-    IEnumerator RestartGame()
+    IEnumerator Death()
     {
         var _manager = Manager.GetInstance();
         _manager.SetProgressByKey(GameProgress.GameOver, true);
         RunDeathFX();
+
         // Wait for 3 seconds
         yield return new WaitForSeconds(3f);
         _manager.SetProgressByKey(GameProgress.GameOver, false);
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour
     void RunDeathFX()
     {
         DisablePlayer();
+        Manager.GetInstance().DisplayMessage(GameProgress.GameOver, 3f);
         Instantiate(DeathFX, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
     }
 }

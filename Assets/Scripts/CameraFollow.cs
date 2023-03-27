@@ -46,25 +46,25 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        DisplayMessage(GameProgress.HowToPlay);
+        DisplayMessage(GameProgress.HowToPlay, 10f);
     }
 
-    void DisplayMessage(GameProgress key)
+    public void DisplayMessage(GameProgress key, float duration)
     {
         string[] _text = Manager.GetInstance().GetProgressMessage(key);
         if (_text.Length == 0)
         {
             return;
         }
-        StartCoroutine(DisplayMessageCoroutine(_text, key));
+        StartCoroutine(DisplayMessageCoroutine(_text, key, duration));
     }
 
-    IEnumerator DisplayMessageCoroutine(string[] text, GameProgress key)
+    IEnumerator DisplayMessageCoroutine(string[] text, GameProgress key, float duration)
     {
            for (int i = 0; i < text.Length; i++)
            {
                 messageUI.text = text[i];
-                yield return new WaitForSeconds(10f);
+                yield return new WaitForSeconds(duration);
            }
 
         messageUI.text = "";
