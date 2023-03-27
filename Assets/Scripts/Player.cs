@@ -5,14 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    //jump
-    public float jumpForce = 4f;
     private Rigidbody rb;
-    public int maxJumps = 2;
-    private int jumps = 0;
-    private bool grounded = true;
 
+    //jump
+    public float jumpForce = 5f;
+    public float moveSpeed = 10f;
+
+    //state
+    public float YSpeed;
+    public bool grounded = true;
+    public bool isFalling = false;
     //death
+    public float DeathCoord = -50;
     public GameObject DeathFX;
     Renderer renderer;
 
@@ -24,6 +28,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        YSpeed = rb.velocity.y;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (grounded)
@@ -31,37 +36,61 @@ public class Player : MonoBehaviour
                 Jump(jumpForce);
                 grounded = false;
             }
-            else if (jumps < maxJumps)
-            {
-                Jump((jumpForce /2));
-                jumps++;
-            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && isFalling)
+        {
+            rb.AddForce(Vector3.left * moveSpeed * Time.deltaTime, ForceMode.Acceleration); 
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) && isFalling)
+        {
+            rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.Acceleration); 
+        }
+
+        if (transform.position.y < DeathCoord ) StartCoroutine(RestartGame());
+
+    }
+
+    private void FixedUpdate()
+    {
+        if(rb.velocity.y < 0)
+        {
+            isFalling = true;
+        }
+        else
+        {
+            isFalling = false;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Death"))
-        {
-            StartCoroutine(RestartGame());
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = true;
-            jumps = 0;
-        }
-    }
 
     void Jump(float force)
     {
         rb.AddForce(Vector3.up * force, ForceMode.Impulse);
     }
 
-      IEnumerator RestartGame()
+    /* platform */
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            grounded = true;
+        }
+    }
+
+    /* boost */
+    public void Boost(float boostForce)
+    {
+        // Apply a vertical force to the player
+        rb.AddForce(Vector3.up * boostForce, ForceMode.Impulse);
+    }
+
+
+    /* death */
+    IEnumerator RestartGame()
     {
         RunDeathFX();
         // Wait for 3 seconds
