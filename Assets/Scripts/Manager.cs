@@ -11,13 +11,17 @@ public class Manager
     private static Manager instance;
 
     // Any global variables or events can be defined here
-    public Dictionary<GameProgress, bool> ProgressDict { get; set; }
+    public Dictionary<GameProgress, bool> ProgressDict = new Dictionary<GameProgress, bool>   
+    {
+        { GameProgress.HowToPlay, false },
+        {GameProgress.GameOver,  false }
+    };
 
     /* Messages*/
 
     public Dictionary<GameProgress, string[]> MessageDict = new Dictionary<GameProgress, string[]>
     {
-        { GameProgress.HowToPlay, new string[] { "Press Space to Jump", "Move Platforms with L and R Keys" } },
+        { GameProgress.HowToPlay, new string[] { "Press Space to Jump", "Move Platforms with L and R Arrow Keys", "While falling, you can use L and R to direct your fall" } },
         {GameProgress.GameOver,  new string[]{ "Game Over"  } }
     };
 
@@ -39,6 +43,11 @@ public class Manager
     public bool GetProgressByKey(GameProgress key)
     {
         return ProgressDict[key];
+    }
+
+    public void SetProgressByKey(GameProgress key, bool val)
+    {
+        ProgressDict[key] = val;
     }
 
 }

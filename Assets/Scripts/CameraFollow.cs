@@ -52,6 +52,22 @@ public class CameraFollow : MonoBehaviour
     void DisplayMessage(GameProgress key)
     {
         string[] _text = Manager.GetInstance().GetProgressMessage(key);
-        messageUI.text = _text[0];
+        if (_text.Length == 0)
+        {
+            return;
+        }
+        StartCoroutine(DisplayMessageCoroutine(_text, key));
+    }
+
+    IEnumerator DisplayMessageCoroutine(string[] text, GameProgress key)
+    {
+           for (int i = 0; i < text.Length; i++)
+           {
+                messageUI.text = text[i];
+                yield return new WaitForSeconds(10f);
+           }
+
+        messageUI.text = "";
+        Manager.GetInstance().SetProgressByKey(key, true);
     }
 }
