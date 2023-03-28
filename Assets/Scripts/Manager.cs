@@ -6,7 +6,7 @@ using UnityEngine;
 /* global vars */
 public enum GameProgress { HowToPlay, GameOver }
 
-public class Manager
+public class Manager : MonoBehaviour
 {
     // The singleton instance of the Manager class
     private static Manager instance;
@@ -17,6 +17,27 @@ public class Manager
         { GameProgress.HowToPlay, false },
         {GameProgress.GameOver,  false }
     };
+
+    // Get the singleton instance of the Manager class
+    public static Manager GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = FindObjectOfType<Manager>();
+            if (instance == null)
+            {
+                GameObject managerObject = new GameObject("Manager");
+                instance = managerObject.AddComponent<Manager>();
+                DontDestroyOnLoad(managerObject);
+            }
+        }
+        return instance;
+    }
+
+    private void Start()
+    {
+        GetInstance();
+    }
 
     /* Messages*/
 
@@ -30,16 +51,7 @@ public class Manager
         return MessageDict[key];
     }
 
-
-    // Get the singleton instance of the Manager class
-    public static Manager GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = new Manager();
-        }
-        return instance;
-    }
+   
 
     public bool GetProgressByKey(GameProgress key)
     {

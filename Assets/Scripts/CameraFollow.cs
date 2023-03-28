@@ -5,6 +5,7 @@ using TMPro;
 
 public class CameraFollow : MonoBehaviour
 {
+    public Manager manager;
     public Transform objectToFollow;
     public Vector3 offset;
     public float rotationSpeed = 1f;
@@ -12,6 +13,12 @@ public class CameraFollow : MonoBehaviour
     public float dragSpeed = 1f;
 
     public TMP_Text messageUI;
+
+    void Start()
+    {
+        manager = Manager.GetInstance();
+        DisplayMessage(GameProgress.HowToPlay, 10f);
+    }
 
     void LateUpdate()
     {
@@ -42,11 +49,6 @@ public class CameraFollow : MonoBehaviour
             offset += new Vector3(offsetX, offsetY, 0f);
             dragStartPosition = Input.mousePosition;
         }
-    }
-
-    private void Start()
-    {
-        DisplayMessage(GameProgress.HowToPlay, 10f);
     }
 
     public void DisplayMessage(GameProgress key, float duration)

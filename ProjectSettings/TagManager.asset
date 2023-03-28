@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Death
   - Ground
+  - Manager
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     private Rigidbody rb;
+    public Manager manager;
 
     //jump
     public float jumpForce = 5f;
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         renderer = GetComponent<Renderer>();
+        manager = Manager.GetInstance();
     }
 
     private void Update()
