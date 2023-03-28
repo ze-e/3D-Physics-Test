@@ -16,16 +16,21 @@ public class Player : MonoBehaviour
     public float YSpeed;
     public bool grounded = true;
     public bool isFalling = false;
+
+    public delegate void EventHandler();
+    public event EventHandler DeathEvent;
+
     //death
     public float DeathCoord = -50;
     public GameObject DeathFX;
     Renderer renderer;
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         renderer = GetComponent<Renderer>();
         manager = Manager.GetInstance();
+        DeathEvent += DeathHandler;
     }
 
     private void Update()
@@ -50,7 +55,8 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.Acceleration); 
         }
 
-        if (transform.position.y < DeathCoord && Manager.GetInstance().GetProgressByKey(GameProgress.GameOver) == false) StartCoroutine(Death());
+        //if (transform.position.y < DeathCoord && Manager.GetInstance().GetProgressByKey(GameProgress.GameOver) == false) StartCoroutine(Death());
+        if (transform.position.y < DeathCoord && Manager.GetInstance().GetProgressByKey(GameProgress.GameOver) == false) DeathEvent();
 
     }
 
@@ -92,27 +98,16 @@ public class Player : MonoBehaviour
 
 
     /* death */
-    IEnumerator Death()
-    {
-        var _manager = Manager.GetInstance();
-        _manager.SetProgressByKey(GameProgress.GameOver, true);
-        RunDeathFX();
 
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
-        _manager.SetProgressByKey(GameProgress.GameOver, false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
-    }
-
-    void DisablePlayer() {
-        renderer.enabled = false;
-        rb.isKinematic = true;
-    }
-
-    void RunDeathFX()
+    void DeathHandler()
     {
         DisablePlayer();
-        Manager.GetInstance().DisplayMessage(GameProgress.GameOver, 3f);
         Instantiate(DeathFX, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+    }
+
+    void DisablePlayer()
+    {
+        renderer.enabled = false;
+        rb.isKinematic = true;
     }
 }

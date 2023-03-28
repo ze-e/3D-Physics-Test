@@ -271,11 +271,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddfc41351c7a824da217c62bcd35baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 0}
   objectToFollow: {fileID: 648670323}
   offset: {x: 0, y: 4, z: -10}
   rotationSpeed: 1
   dragSpeed: 1
-  messageUI: {fileID: 612440163}
 --- !u!20 &473064407
 Camera:
   m_ObjectHideFlags: 0
@@ -649,6 +649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf4b990a93333142a8002bdbdb0fa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 0}
   jumpForce: 5
   moveSpeed: 10
   YSpeed: 0
@@ -1313,6 +1314,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1197111162945273959, guid: d2d2bda6daad0aa43916b56950916ab7, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 648670325}
+    - target: {fileID: 1197111162945273959, guid: d2d2bda6daad0aa43916b56950916ab7, type: 3}
+      propertyPath: messageUI
+      value: 
+      objectReference: {fileID: 612440163}
     - target: {fileID: 1551720285987154592, guid: d2d2bda6daad0aa43916b56950916ab7, type: 3}
       propertyPath: m_RootOrder
       value: 15

@@ -1,22 +1,20 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using UnityEngine.SceneManagement;
 
 /* global vars */
 public enum GameProgress { HowToPlay, GameOver }
 
 public class Manager : MonoBehaviour
 {
-    // The singleton instance of the Manager class
     private static Manager instance;
+    public Player player;
 
-    // Any global variables or events can be defined here
-    public Dictionary<GameProgress, bool> ProgressDict = new Dictionary<GameProgress, bool>   
-    {
-        { GameProgress.HowToPlay, false },
-        {GameProgress.GameOver,  false }
-    };
+    /* UI */
+    public TMP_Text messageUI;
+    private Coroutine displayMessageCoroutine;
 
     // Get the singleton instance of the Manager class
     public static Manager GetInstance()
@@ -37,7 +35,15 @@ public class Manager : MonoBehaviour
     private void Start()
     {
         GetInstance();
+        player.DeathEvent += DeathHandler;
+
+        if (!GetProgressByKey(GameProgress.HowToPlay) )
+        {
+            DisplayMessage(GameProgress.HowToPlay, 10f);
+        }
+
     }
+
 
     /* Messages*/
 
@@ -51,7 +57,12 @@ public class Manager : MonoBehaviour
         return MessageDict[key];
     }
 
-   
+    /* Progress */
+    public Dictionary<GameProgress, bool> ProgressDict = new Dictionary<GameProgress, bool>
+    {
+        { GameProgress.HowToPlay, false },
+        { GameProgress.GameOver,  false }
+    };
 
     public bool GetProgressByKey(GameProgress key)
     {
@@ -67,7 +78,44 @@ public class Manager : MonoBehaviour
 
     public void DisplayMessage(GameProgress key, float duration)
     {
-        CameraFollow _camera = Camera.main.GetComponent<CameraFollow>();
-        _camera.DisplayMessage(key, duration);  
+        if (displayMessageCoroutine != null)
+        {
+            StopCoroutine(displayMessageCoroutine);
+        }
+
+        string[] _text = GetProgressMessage(key);
+        if (_text.Length == 0)
+        {
+            return;
+        }
+        displayMessageCoroutine = StartCoroutine(DisplayMessageCoroutine(_text, key, duration));
+    }
+
+    IEnumerator DisplayMessageCoroutine(string[] text, GameProgress key, float duration)
+    {
+        for (int i = 0; i < text.Length; i++)
+        {
+            messageUI.text = text[i];
+            yield return new WaitForSeconds(duration);
+        }
+
+        messageUI.text = "";
+        SetProgressByKey(key, true);
+    }
+
+    /* Death */
+    public void DeathHandler()
+    {
+        SetProgressByKey(GameProgress.GameOver, true);
+        DisplayMessage(GameProgress.GameOver, 3f);
+        StartCoroutine(ReloadLevel());
+    }
+
+    IEnumerator ReloadLevel()
+    {
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(3f);
+        SetProgressByKey(GameProgress.GameOver, false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 }

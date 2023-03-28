@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -12,12 +9,10 @@ public class CameraFollow : MonoBehaviour
     private Vector3 dragStartPosition;
     public float dragSpeed = 1f;
 
-    public TMP_Text messageUI;
 
     void Start()
     {
         manager = Manager.GetInstance();
-        DisplayMessage(GameProgress.HowToPlay, 10f);
     }
 
     void LateUpdate()
@@ -50,26 +45,5 @@ public class CameraFollow : MonoBehaviour
             dragStartPosition = Input.mousePosition;
         }
     }
-
-    public void DisplayMessage(GameProgress key, float duration)
-    {
-        string[] _text = Manager.GetInstance().GetProgressMessage(key);
-        if (_text.Length == 0)
-        {
-            return;
-        }
-        StartCoroutine(DisplayMessageCoroutine(_text, key, duration));
-    }
-
-    IEnumerator DisplayMessageCoroutine(string[] text, GameProgress key, float duration)
-    {
-           for (int i = 0; i < text.Length; i++)
-           {
-                messageUI.text = text[i];
-                yield return new WaitForSeconds(duration);
-           }
-
-        messageUI.text = "";
-        Manager.GetInstance().SetProgressByKey(key, true);
-    }
+    
 }
