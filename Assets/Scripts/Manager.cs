@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-
-/* global vars */
-public enum GameProgress { HowToPlay, GameOver }
-
+using Settings;
 public class Manager : MonoBehaviour
 {
     private static Manager instance;
