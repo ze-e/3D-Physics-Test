@@ -7,7 +7,7 @@ using Settings;
 public class Manager : MonoBehaviour
 {
     private static Manager instance;
-    public static Manager Instance { get { return instance; } }
+    //public static Manager Instance { get { return instance; } }
     public Player player;
     private Dictionary<GameProgress, bool> ProgressDict  = new Dictionary<GameProgress, bool>();
     private Dictionary<GameProgress, string[]> MessageDict = new Dictionary<GameProgress, string[]>();
@@ -18,18 +18,18 @@ public class Manager : MonoBehaviour
 
     #region start
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (instance == null)
+    //    {
+    //        instance = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    }
+    //    else
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void Start()
     {
@@ -48,12 +48,28 @@ public class Manager : MonoBehaviour
 
     void InitData()
     {
+        instance = GetInstance();
         CreateGameProgressDict();
     }
 
     void InitEvents()
     {
         player.DeathEvent += DeathHandler;
+    }
+
+    public static Manager GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = FindObjectOfType<Manager>();
+            if (instance == null)
+            {
+                GameObject managerObject = new GameObject("Manager");
+                instance = managerObject.AddComponent<Manager>();
+                DontDestroyOnLoad(managerObject);
+            }
+        }
+        return instance;
     }
 
     #endregion start
@@ -137,7 +153,8 @@ public class Manager : MonoBehaviour
     private void ReloadLevel()
     {
         SetProgressByKey(GameProgress.GameOver, false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     #endregion events
