@@ -79,7 +79,6 @@ public class Manager : MonoBehaviour
     //public string[] GetProgressMessage(GameProgress key)
     //{
     //    MessageData[] _messages = Resources.FindObjectsOfTypeAll<MessageData>();
-
     //    foreach (MessageData _message in _messages)
     //    {
     //        if (_message.MessageName == key)
@@ -95,7 +94,6 @@ public class Manager : MonoBehaviour
     {
         return Messages.MessageDict[key];
     }
-    
 
     public void DisplayMessage(GameProgress key, float duration)
     {
