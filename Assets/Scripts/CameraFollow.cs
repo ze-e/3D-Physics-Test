@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    private Manager manager;
     public float rotationSpeed = 1f;
     private Vector3 dragStartPosition;
     public float dragSpeed = 1f;
@@ -23,12 +22,6 @@ public class CameraFollow : MonoBehaviour
     {
         get { return _offset; }
         set { _offset = value; }
-    }
-
-
-    void Start()
-    {
-        manager = Manager.GetInstance();
     }
 
     void LateUpdate()

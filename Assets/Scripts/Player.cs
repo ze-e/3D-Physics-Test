@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.Acceleration); 
         }
 
-        if (transform.position.y < DeathCoord && Manager.GetInstance().GetProgressByKey(GameProgress.GameOver) == false) DeathEvent();
+        if (transform.position.y < DeathCoord && Manager.Instance.GetProgressByKey(GameProgress.GameOver) == false) DeathEvent();
 
     }
 
