@@ -19,10 +19,24 @@ public class Manager : MonoBehaviour
 
     private void Awake()
     {
+        InitManager();
+
+        // initialize data
+        InitData();
+
+        // subscribe to events
+        InitEvents();
+
+        // show intro text (how to play)
+        DisplayMessage(GameProgress.HowToPlay, 5f);
+    }
+
+    void InitManager()
+    {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -30,24 +44,8 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        // initialize data
-       InitData();
-
-        // subscribe to events
-        InitEvents();
-
-        // show intro text (how to play)
-        if (!GetProgressByKey(GameProgress.HowToPlay))
-        {
-            DisplayMessage(GameProgress.HowToPlay, 10f);
-        }
-    }
-
     void InitData()
     {
-        //instance = GetInstance();
         CreateGameProgressDict();
     }
 
@@ -56,44 +54,30 @@ public class Manager : MonoBehaviour
         player.DeathEvent += DeathHandler;
     }
 
-    //public static Manager GetInstance()
-    //{
-    //    if (instance == null)
-    //    {
-    //        instance = FindObjectOfType<Manager>();
-    //        if (instance == null)
-    //        {
-    //            GameObject managerObject = new GameObject("Manager");
-    //            instance = managerObject.AddComponent<Manager>();
-    //            DontDestroyOnLoad(managerObject);
-    //        }
-    //    }
-    //    return instance;
-    //}
 
     #endregion start
 
 
     #region messages
 
-    //public string[] GetProgressMessage(GameProgress key)
-    //{
-    //    MessageData[] _messages = Resources.FindObjectsOfTypeAll<MessageData>();
-    //    foreach (MessageData _message in _messages)
-    //    {
-    //        if (_message.MessageName == key)
-    //        {
-    //            return _message.Message;
-    //        }
-    //    }
-
-    //    return null;
-    //}
-
     public string[] GetProgressMessage(GameProgress key)
     {
-        return Messages.MessageDict[key];
+        MessageData[] _messages = Resources.FindObjectsOfTypeAll<MessageData>();
+        foreach (MessageData _message in _messages)
+        {
+            if (_message.MessageName == key)
+            {
+                return _message.Message;
+            }
+        }
+
+        return null;
     }
+
+    //public string[] GetProgressMessage(GameProgress key)
+    //{
+    //    return Messages.MessageDict[key];
+    //}
 
     public void DisplayMessage(GameProgress key, float duration)
     {

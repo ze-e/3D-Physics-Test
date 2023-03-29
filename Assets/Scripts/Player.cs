@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public float moveSpeed = 10f;
 
     //state
-    public float YSpeed;
     public bool grounded = true;
     public bool isFalling = false;
 
@@ -35,7 +34,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        YSpeed = rb.velocity.y;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (grounded)
