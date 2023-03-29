@@ -7,10 +7,10 @@ using Settings;
 public class Manager : MonoBehaviour
 {
     private static Manager instance;
-    //public static Manager Instance { get { return instance; } }
+    public static Manager Instance { get { return instance; } }
     public Player player;
     private Dictionary<GameProgress, bool> ProgressDict  = new Dictionary<GameProgress, bool>();
-    private Dictionary<GameProgress, string[]> MessageDict = new Dictionary<GameProgress, string[]>();
+    private List<MessageData> messages;
 
     /* UI */
     public TMP_Text messageUI;
@@ -18,18 +18,18 @@ public class Manager : MonoBehaviour
 
     #region start
 
-    //private void Awake()
-    //{
-    //    if (instance == null)
-    //    {
-    //        instance = this;
-    //        DontDestroyOnLoad(gameObject);
-    //    }
-    //    else
-    //    {
-    //        Destroy(gameObject);
-    //    }
-    //}
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -48,7 +48,7 @@ public class Manager : MonoBehaviour
 
     void InitData()
     {
-        instance = GetInstance();
+        //instance = GetInstance();
         CreateGameProgressDict();
     }
 
@@ -57,39 +57,50 @@ public class Manager : MonoBehaviour
         player.DeathEvent += DeathHandler;
     }
 
-    public static Manager GetInstance()
-    {
-        if (instance == null)
-        {
-            instance = FindObjectOfType<Manager>();
-            if (instance == null)
-            {
-                GameObject managerObject = new GameObject("Manager");
-                instance = managerObject.AddComponent<Manager>();
-                DontDestroyOnLoad(managerObject);
-            }
-        }
-        return instance;
-    }
+    //public static Manager GetInstance()
+    //{
+    //    if (instance == null)
+    //    {
+    //        instance = FindObjectOfType<Manager>();
+    //        if (instance == null)
+    //        {
+    //            GameObject managerObject = new GameObject("Manager");
+    //            instance = managerObject.AddComponent<Manager>();
+    //            DontDestroyOnLoad(managerObject);
+    //        }
+    //    }
+    //    return instance;
+    //}
 
     #endregion start
 
 
     #region messages
 
+    //public string[] GetProgressMessage(GameProgress key)
+    //{
+    //    MessageData[] _messages = Resources.FindObjectsOfTypeAll<MessageData>();
+
+    //    foreach (MessageData _message in _messages)
+    //    {
+    //        if (_message.MessageName == key)
+    //        {
+    //            return _message.Message;
+    //        }
+    //    }
+
+    //    return null;
+    //}
+
     public string[] GetProgressMessage(GameProgress key)
     {
-        MessageData[] _messages = Resources.FindObjectsOfTypeAll<MessageData>();
+        return Messages.MessageDict[key];
+    }
 
-        foreach (MessageData _message in _messages)
-        {
-            if (_message.MessageName == key)
-            {
-                return _message.Message;
-            }
-        }
 
-        return null;
+    public List<MessageData> GetMessageDict()
+    {
+        return messages;
     }
 
     public void DisplayMessage(GameProgress key, float duration)
@@ -153,8 +164,7 @@ public class Manager : MonoBehaviour
     private void ReloadLevel()
     {
         SetProgressByKey(GameProgress.GameOver, false);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     #endregion events
