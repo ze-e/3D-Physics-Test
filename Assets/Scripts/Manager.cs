@@ -40,10 +40,10 @@ public class Manager : MonoBehaviour
         InitEvents();
 
         // show intro text (how to play)
-        //if (!GetProgressByKey(GameProgress.HowToPlay))
-        //{
-        //    DisplayMessage(GameProgress.HowToPlay, 10f);
-        //}
+        if (!GetProgressByKey(GameProgress.HowToPlay))
+        {
+            DisplayMessage(GameProgress.HowToPlay, 10f);
+        }
     }
 
     void InitData()
@@ -84,11 +84,8 @@ public class Manager : MonoBehaviour
         }
 
         string[] _text = GetProgressMessage(key);
-        if (_text.Length == 0)
-        {
-            return;
-        }
-        displayMessageCoroutine = StartCoroutine(DisplayMessageCoroutine(_text, key, duration));
+        if (_text == null || _text.Length == 0) Debug.LogWarning("Message for " + key + " not loaded");
+        else displayMessageCoroutine = StartCoroutine(DisplayMessageCoroutine(_text, key, duration));
     }
 
     IEnumerator DisplayMessageCoroutine(string[] text, GameProgress key, float duration)
