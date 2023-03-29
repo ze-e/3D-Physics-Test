@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: GameOver
   m_EditorClassIdentifier: Assembly-CSharp::MessageData
-  Name: 0
-  Message: []
+  MessageName: 1
+  Message:
+  - Game Over
