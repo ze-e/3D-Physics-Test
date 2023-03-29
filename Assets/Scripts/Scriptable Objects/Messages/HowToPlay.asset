@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: HowToPlay
   m_EditorClassIdentifier: Assembly-CSharp::MessageData
-  Key: 0
+  Name: 0
   Message:
-  - Press Space to Jump
-  - Move Platforms with L and R Arrow Keys
-  - While falling, you can use L and R to direct your fall
+  - Use the arrow keys to move platforms
+  - Use Spacebar to Jump
+  - While In the air, use the arrow keys to move Player  left and right

@@ -6,7 +6,6 @@ using Settings;
 [CreateAssetMenu(fileName = "New MessageData", menuName = "Message")]
 public class MessageData : ScriptableObject
 {
-    [HideInInspector]
-    public GameProgress Key;
+    public GameProgress Name;
     public string[] Message;
 }

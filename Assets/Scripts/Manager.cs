@@ -62,14 +62,19 @@ public class Manager : MonoBehaviour
 
     #region messages
 
-    public Dictionary<GameProgress, string[]> MessageDict = new Dictionary<GameProgress, string[]>
+    public string[] GetProgressMessage(GameProgress key)
     {
-        { GameProgress.HowToPlay, new string[] { "Press Space to Jump", "Move Platforms with L and R Arrow Keys", "While falling, you can use L and R to direct your fall" } },
-        {GameProgress.GameOver,  new string[]{ "Game Over"  } }
-    };
+        MessageData[] _messages = Resources.FindObjectsOfTypeAll<MessageData>();
 
-    public string[] GetProgressMessage(GameProgress key) {
-        return MessageDict[key];
+        foreach (MessageData _message in _messages)
+        {
+            if (_message.Name == key)
+            {
+                return _message.Message;
+            }
+        }
+
+        return null;
     }
 
     public void DisplayMessage(GameProgress key, float duration)
@@ -103,7 +108,6 @@ public class Manager : MonoBehaviour
     #endregion messages
 
     #region progress
-
 
     private void CreateGameProgressDict()
     {
