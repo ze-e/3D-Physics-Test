@@ -28,7 +28,7 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
-        manager = Manager.GetInstance();
+        manager = Manager.Instance;
     }
 
     void LateUpdate()

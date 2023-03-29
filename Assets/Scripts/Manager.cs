@@ -7,48 +7,47 @@ using Settings;
 public class Manager : MonoBehaviour
 {
     private static Manager instance;
+    public static Manager Instance { get { return instance; } }
     public Player player;
     private Dictionary<GameProgress, bool> ProgressDict  = new Dictionary<GameProgress, bool>();
+    private Dictionary<GameProgress, string[]> MessageDict = new Dictionary<GameProgress, string[]>();
 
     /* UI */
     public TMP_Text messageUI;
     private Coroutine displayMessageCoroutine;
 
     #region start
-    // Get the singleton instance of the Manager class
-    public static Manager GetInstance()
+
+    private void Awake()
     {
         if (instance == null)
         {
-            instance = FindObjectOfType<Manager>();
-            if (instance == null)
-            {
-                GameObject managerObject = new GameObject("Manager");
-                instance = managerObject.AddComponent<Manager>();
-                DontDestroyOnLoad(managerObject);
-            }
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        return instance;
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
         // initialize data
-        InitData();
+       InitData();
 
         // subscribe to events
         InitEvents();
 
         // show intro text (how to play)
-        if (!GetProgressByKey(GameProgress.HowToPlay) )
-        {
-            DisplayMessage(GameProgress.HowToPlay, 10f);
-        }
+        //if (!GetProgressByKey(GameProgress.HowToPlay))
+        //{
+        //    DisplayMessage(GameProgress.HowToPlay, 10f);
+        //}
     }
 
     void InitData()
     {
-        GetInstance();
         CreateGameProgressDict();
     }
 
@@ -68,7 +67,7 @@ public class Manager : MonoBehaviour
 
         foreach (MessageData _message in _messages)
         {
-            if (_message.Name == key)
+            if (_message.MessageName == key)
             {
                 return _message.Message;
             }
@@ -109,7 +108,7 @@ public class Manager : MonoBehaviour
 
     #region progress
 
-    private void CreateGameProgressDict()
+     void CreateGameProgressDict()
     {
         foreach (GameProgress progress in System.Enum.GetValues(typeof(GameProgress)))
         {

@@ -6,6 +6,6 @@ using Settings;
 [CreateAssetMenu(fileName = "New MessageData", menuName = "Message")]
 public class MessageData : ScriptableObject
 {
-    public GameProgress Name;
+    public GameProgress MessageName;
     public string[] Message;
 }
