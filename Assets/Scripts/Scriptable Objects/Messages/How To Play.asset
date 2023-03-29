@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: How To Play
   m_EditorClassIdentifier: Assembly-CSharp::MessageData
   MessageName: 0
-  Message: []
+  Message:
+  - Use Arrow Keys to move Platforms
+  - Use Spacebar to Jump
+  - While falling, move Left and Right with Arrow Keys
