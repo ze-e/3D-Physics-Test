@@ -8,11 +8,13 @@ public class Manager : MonoBehaviour
 {
     private static Manager instance;
     public Player player;
+    private Dictionary<GameProgress, bool> ProgressDict  = new Dictionary<GameProgress, bool>();
 
     /* UI */
     public TMP_Text messageUI;
     private Coroutine displayMessageCoroutine;
 
+    #region start
     // Get the singleton instance of the Manager class
     public static Manager GetInstance()
     {
@@ -31,18 +33,34 @@ public class Manager : MonoBehaviour
 
     private void Start()
     {
-        GetInstance();
-        player.DeathEvent += DeathHandler;
+        // initialize data
+        InitData();
 
+        // subscribe to events
+        InitEvents();
+
+        // show intro text (how to play)
         if (!GetProgressByKey(GameProgress.HowToPlay) )
         {
             DisplayMessage(GameProgress.HowToPlay, 10f);
         }
-
     }
 
+    void InitData()
+    {
+        GetInstance();
+        CreateGameProgressDict();
+    }
 
-    /* Messages*/
+    void InitEvents()
+    {
+        player.DeathEvent += DeathHandler;
+    }
+
+    #endregion start
+
+
+    #region messages
 
     public Dictionary<GameProgress, string[]> MessageDict = new Dictionary<GameProgress, string[]>
     {
@@ -53,25 +71,6 @@ public class Manager : MonoBehaviour
     public string[] GetProgressMessage(GameProgress key) {
         return MessageDict[key];
     }
-
-    /* Progress */
-    public Dictionary<GameProgress, bool> ProgressDict = new Dictionary<GameProgress, bool>
-    {
-        { GameProgress.HowToPlay, false },
-        { GameProgress.GameOver,  false }
-    };
-
-    public bool GetProgressByKey(GameProgress key)
-    {
-        return ProgressDict[key];
-    }
-
-    public void SetProgressByKey(GameProgress key, bool val)
-    {
-        ProgressDict[key] = val;
-    }
-
-    /* Displaying Text */
 
     public void DisplayMessage(GameProgress key, float duration)
     {
@@ -100,19 +99,46 @@ public class Manager : MonoBehaviour
         SetProgressByKey(key, true);
     }
 
+
+    #endregion messages
+
+    #region progress
+
+
+    private void CreateGameProgressDict()
+    {
+        foreach (GameProgress progress in System.Enum.GetValues(typeof(GameProgress)))
+        {
+            ProgressDict.Add(progress, false);
+        }
+    }
+
+    public bool GetProgressByKey(GameProgress key)
+    {
+        return ProgressDict[key];
+    }
+
+    public void SetProgressByKey(GameProgress key, bool val)
+    {
+        ProgressDict[key] = val;
+    }
+
+    #endregion progress
+
+    #region events
+
     /* Death */
     public void DeathHandler()
     {
         SetProgressByKey(GameProgress.GameOver, true);
         DisplayMessage(GameProgress.GameOver, 3f);
-        StartCoroutine(ReloadLevel());
+        Invoke(nameof(ReloadLevel), 3f);
     }
-
-    IEnumerator ReloadLevel()
+    private void ReloadLevel()
     {
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
         SetProgressByKey(GameProgress.GameOver, false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
+
+    #endregion events
 }

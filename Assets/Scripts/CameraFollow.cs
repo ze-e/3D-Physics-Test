@@ -2,12 +2,28 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Manager manager;
-    public Transform objectToFollow;
-    public Vector3 offset;
+    private Manager manager;
     public float rotationSpeed = 1f;
     private Vector3 dragStartPosition;
     public float dragSpeed = 1f;
+
+    [SerializeField]
+    private Transform _objectToFollow;
+
+    public Transform ObjectToFollow
+    {
+        get { return _objectToFollow; }
+        set { _objectToFollow = value; }
+    }
+
+    [SerializeField]
+    private Vector3 _offset;
+
+    public Vector3 Offset
+    {
+        get { return _offset; }
+        set { _offset = value; }
+    }
 
 
     void Start()
@@ -17,9 +33,9 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        if (objectToFollow)
+        if (_objectToFollow)
         {
-            transform.position = objectToFollow.position + offset;
+            transform.position = _objectToFollow.position + _offset;
         }
 
         // If left mouse button is pressed down, start dragging
@@ -36,12 +52,12 @@ public class CameraFollow : MonoBehaviour
             transform.localEulerAngles += new Vector3(rotationY, rotationX, 0f);
             dragStartPosition = Input.mousePosition;
         }
-        // If right mouse button is held down and moving, adjust the offset
+        // If right mouse button is held down and moving, adjust the _offset
         if (Input.GetMouseButton(1))
         {
-            float offsetX = (dragStartPosition.x - Input.mousePosition.x) * dragSpeed * Time.deltaTime;
-            float offsetY = (dragStartPosition.y - Input.mousePosition.y) * dragSpeed * Time.deltaTime;
-            offset += new Vector3(offsetX, offsetY, 0f);
+            float _offsetX = (dragStartPosition.x - Input.mousePosition.x) * dragSpeed * Time.deltaTime;
+            float _offsetY = (dragStartPosition.y - Input.mousePosition.y) * dragSpeed * Time.deltaTime;
+            _offset += new Vector3(_offsetX, _offsetY, 0f);
             dragStartPosition = Input.mousePosition;
         }
     }

@@ -271,11 +271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddfc41351c7a824da217c62bcd35baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  objectToFollow: {fileID: 648670323}
-  offset: {x: 0, y: 4, z: -10}
   rotationSpeed: 1
   dragSpeed: 1
+  _objectToFollow: {fileID: 648670323}
+  _offset: {x: 0, y: 5, z: -10}
 --- !u!20 &473064407
 Camera:
   m_ObjectHideFlags: 0
@@ -301,7 +300,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 43
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -649,7 +648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf4b990a93333142a8002bdbdb0fa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
   jumpForce: 5
   moveSpeed: 10
   YSpeed: 0

@@ -3,8 +3,9 @@ using Settings;
 
 public class Player : MonoBehaviour
 {
+    #region var
     private Rigidbody rb;
-    public Manager manager;
+    private Manager manager;
 
     //jump
     public float jumpForce = 5f;
@@ -23,6 +24,9 @@ public class Player : MonoBehaviour
     public GameObject DeathFX;
     Renderer renderer;
 
+    #endregion var
+
+    #region lifecycle methods
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -69,14 +73,20 @@ public class Player : MonoBehaviour
         }
     }
 
+    #endregion lifecycle methods
+
+    #region controller
 
     void Jump(float force)
     {
         rb.AddForce(Vector3.up * force, ForceMode.Impulse);
     }
 
-    /* platform */
-
+    public void Boost(float boostForce)
+    {
+        // Apply a vertical force to the player
+        rb.AddForce(Vector3.up * boostForce, ForceMode.Impulse);
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -86,13 +96,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    /* boost */
-    public void Boost(float boostForce)
-    {
-        // Apply a vertical force to the player
-        rb.AddForce(Vector3.up * boostForce, ForceMode.Impulse);
-    }
+    #endregion controller
 
+    #region lifescyle
 
     /* death */
 
@@ -107,4 +113,6 @@ public class Player : MonoBehaviour
         renderer.enabled = false;
         rb.isKinematic = true;
     }
+
+    #endregion lifecycle
 }
