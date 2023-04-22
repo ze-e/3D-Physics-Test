@@ -53,6 +53,15 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.Acceleration); 
         }
 
+        if (Input.GetKeyDown(KeyCode.UpArrow) && isFalling)
+        {
+            rb.AddForce(Vector3.forward * moveSpeed * Time.deltaTime, ForceMode.Acceleration);
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) && isFalling)
+        {
+            rb.AddForce(Vector3.back * moveSpeed * Time.deltaTime, ForceMode.Acceleration);
+        }
         if (transform.position.y < DeathCoord && Manager.Instance.GetProgressByKey(GameProgress.GameOver) == false) DeathEvent();
 
     }
@@ -78,10 +87,16 @@ public class Player : MonoBehaviour
         rb.AddForce(Vector3.up * force, ForceMode.Impulse);
     }
 
-    public void Boost(float boostForce)
+    public void Boost(float boostForce, Vector3 boostDirection)
     {
         // Apply a vertical force to the player
-        rb.AddForce(Vector3.up * boostForce, ForceMode.Impulse);
+        rb.AddForce(boostDirection * boostForce, ForceMode.Impulse);
+    }
+
+    public void Teleport(Transform twin)
+    {
+        // Telport player to other teleporter
+        transform.position = twin.position;
     }
 
     void OnCollisionEnter(Collision collision)
