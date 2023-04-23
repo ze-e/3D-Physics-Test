@@ -9,7 +9,7 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && coolDown == false)
+        if (other.CompareTag("Player") && !coolDown && twin != null)
         {
             other.GetComponent<Player>().Teleport(twin);
             coolDown = true;

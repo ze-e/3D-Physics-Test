@@ -1,5 +1,6 @@
 using UnityEngine;
 using Settings;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -95,8 +96,7 @@ public class Player : MonoBehaviour
 
     public void Teleport(Transform twin)
     {
-        // Telport player to other teleporter
-        transform.position = twin.position;
+            transform.position = twin.position;
     }
 
     void OnCollisionEnter(Collision collision)
